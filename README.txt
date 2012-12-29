@@ -35,6 +35,35 @@ still needs to be ported to 3.0.x and 3.2.x kernels. If you mange to fix this,
 please send me a patch :)
 
 
+  Using pcmsim
+----------------
+
+Please make sure to do the following before you use pcmsim:
+
+1. There are some parameters that are currently hard-coded that you would need
+to change to match your specific computer:
+        memory_ddr_version
+        memory_ddr_rating
+        memory_tRCD
+        memory_tRP
+        memory_tCL10 (this is the value of the CL parameter x 10)
+They are defined starting at lines 110 and 563 of memory.c. You should be able
+to lookup these values on data sheets of your RAM modules. There might be a few
+more hard-coded values in memory.c - please look around to make sure.
+
+2. Edit pcm.c if you wish to change the parameters of the PCM device that you
+are simulating.
+
+3. In addition to these parameters, the module benchmarks the rest of the
+parameters when it is loaded. Check dmesg for the summary. Try loading and
+unloading the module several times to make sure that the numbers are reasonably
+stable. After unloading the module, some statistics are printed to dmesg.
+
+Once everything works, load the module. Check dmesg to make sure that the
+printed numbers appear reasonable. Then format and mount /dev/pcm0, do your
+benchmarks, and umount the disk and unload the module when you are done. Then
+check dmesg for a few more statistics.
+
 
   Simulator Pseudo-Code
 -------------------------
